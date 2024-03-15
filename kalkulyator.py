@@ -1,106 +1,308 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QLineEdit
+from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtCore import Qt
 
-class Calculator(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Hesap Makinesi")
-        self.setGeometry(100, 100, 300, 300)
+app = QApplication([])
+oyna = QWidget()
 
-        self.layout = QVBoxLayout()
+oyna.setWindowTitle("Calculator")
+oyna.setGeometry(1400, 500, 240, 310)
+oyna.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        color: black;
+    }
+""")
 
-        self.result_display = QLineEdit()
-        self.layout.addWidget(self.result_display)
 
-        buttons = [
-            ("7", self.on_button_clicked),
-            ("8", self.on_button_clicked),
-            ("9", self.on_button_clicked),
-            ("/", self.on_button_clicked),
-            ("4", self.on_button_clicked),
-            ("5", self.on_button_clicked),
-            ("6", self.on_button_clicked),
-            ("*", self.on_button_clicked),
-            ("1", self.on_button_clicked),
-            ("2", self.on_button_clicked),
-            ("3", self.on_button_clicked),
-            ("-", self.on_button_clicked),
-            ("0", self.on_button_clicked),
-            (".", self.on_button_clicked),
-            ("=", self.on_equals_clicked),
-            ("+", self.on_button_clicked),
-            ("C", self.clear_display)
-        ]
+input = QLineEdit(oyna)
+input.setGeometry(0, 0, 240, 60)
+input.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: black;
+    }
+""")
+input.setAlignment(Qt.AlignRight)
 
-        for text, slot in buttons:
-            button = QPushButton(text)
-            button.clicked.connect(slot)
-            self.layout.addWidget(button)
+def birBosildi():
+    txt = input.text() + "1"
+    input.setText(txt)
 
-        self.setLayout(self.layout)
+def ikkiBosildi():
+    txt = input.text() + "2"
+    input.setText(txt)
 
-    def on_button_clicked(self):
-        button = self.sender()
-        self.result_display.setText(self.result_display.text() + button.text())
+def uchBosildi():
+    txt = input.text() + "3"
+    input.setText(txt)
 
-    def on_equals_clicked(self):
-        try:
-            result = eval(self.result_display.text())
-            self.result_display.setText(str(result))
-        except Exception as e:
-            self.result_display.setText("Hata")
+def tortBosildi():
+    txt = input.text() + "4"
+    input.setText(txt)
 
-    def clear_display(self):
-        self.result_display.clear()
+def beshBosildi():
+    txt = input.text() + "5"
+    input.setText(txt)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    calculator = Calculator()
-    calculator.show()
-    sys.exit(app.exec_())
-import tkinter as tk
+def oltiBosildi():
+    txt = input.text() + "6"
+    input.setText(txt)
 
-class Calculator:
-    def __init__(self, master):
-        self.master = master
-        master.title("Calculator")
+def yettiBosildi():
+    txt = input.text() + "7"
+    input.setText(txt)
 
-        self.display = tk.Entry(master, width=30)
-        self.display.grid(row=0, column=0, columnspan=4)
+def sakkizBosildi():
+    txt = input.text() + "8"
+    input.setText(txt)
 
-        self.buttons = [
-            '7', '8', '9', '/',
-            '4', '5', '6', '*',
-            '1', '2', '3', '-',
-            '0', '.', '=', '+'
-        ]
+def toqqizBosildi():
+    txt = input.text() + "9"
+    input.setText(txt)
 
-        # Create and place buttons
-        r = 1
-        c = 0
-        for btn in self.buttons:
-            tk.Button(master, text=btn, width=5, command=lambda char=btn: self.button_click(char)).grid(row=r, column=c)
-            c += 1
-            if c > 3:
-                c = 0
-                r += 1
+def nolBosildi():
+    txt = input.text() + "0"
+    input.setText(txt)
 
-    def button_click(self, char):
-        if char == '=':
-            try:
-                result = eval(self.display.get())
-                self.display.delete(0, tk.END)
-                self.display.insert(tk.END, str(result))
-            except:
-                self.display.delete(0, tk.END)
-                self.display.insert(tk.END, "Error")
-        else:
-            self.display.insert(tk.END, char)
+def plusBosildi():
+    txt = input.text()
+    if txt[-1] == "+":
+        return
+    if txt[-1] in ["-", "*", "/"]:
+        txt = txt[:-1]
+    input.setText(txt + "+")
 
-def main():
-    root = tk.Tk()
-    calculator = Calculator(root)
-    root.mainloop()
+def minusBosildi():
+    txt = input.text()
+    if txt[-1] == "-":
+        return
+    if txt[-1] in ["+", "*", "/"]:
+        txt = txt[:-1]
+    input.setText(txt + "-")
 
-if __name__ == "__main__":
-    main()
+def bolishBosildi():
+    txt = input.text()
+    if txt[-1] == "/":
+        return
+    if txt[-1] in ["-", "*", "+"]:
+        txt = txt[:-1]
+    input.setText(txt + "/")
+
+def kopaytirishBosildi():
+    txt = input.text()
+    if txt[-1] == "*":
+        return
+    if txt[-1] in ["-", "+", "/"]:
+        txt = txt[:-1]
+    input.setText(txt + "*")
+
+def nuqtaBosildi():
+    txt = input.text()
+    if txt[-1] == ".":
+        return
+    if txt[-1] in ["-", "+", "/", "*"]:
+        txt = txt[:-1]
+    input.setText(txt + ".")
+
+
+def hisobla():
+    txt = input.text()
+    natija = str(eval(txt))
+    input.setText(natija)
+
+def cBosildi():
+    txt = input.text()
+    if txt[-1] == "C":
+        txt = ""
+
+
+
+button1 = QPushButton("1", oyna)
+button1.setGeometry(0, 110, 60, 50)
+button1.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+button2 = QPushButton("2", oyna)
+button2.setGeometry(60, 110, 60, 50)
+button2.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+button3 = QPushButton("3", oyna)
+button3.setGeometry(120, 110, 60, 50)
+button3.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+button4 = QPushButton("4", oyna)
+button4.setGeometry(0, 160, 60, 50)
+button4.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+button5 = QPushButton("5", oyna)
+button5.setGeometry(60, 160, 60, 50)
+button5.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+button6 = QPushButton("6", oyna)
+button6.setGeometry(120, 160, 60, 50)
+button6.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+button7 = QPushButton("7", oyna)
+button7.setGeometry(0, 210, 60, 50)
+button7.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+button8 = QPushButton("8", oyna)
+button8.setGeometry(60, 210, 60, 50)
+button8.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+button9 = QPushButton("9", oyna)
+button9.setGeometry(120, 210, 60, 50)
+button9.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+
+button0 = QPushButton("0", oyna)
+button0.setGeometry(0, 260, 120, 50)
+button0.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+buttonNuqta = QPushButton(".", oyna)
+buttonNuqta.setGeometry(120, 260, 60, 50)
+buttonNuqta.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: red;
+    }
+""")
+
+buttonBolish = QPushButton("/", oyna)
+buttonBolish.setGeometry(60, 60, 60, 50)
+buttonBolish.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: yellow;
+    }
+""")
+
+
+buttonKopaytirish = QPushButton("*", oyna)
+buttonKopaytirish.setGeometry(120, 60, 60, 50)
+buttonKopaytirish.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: yellow;
+    }
+""")
+
+buttonMinus = QPushButton("-", oyna)
+buttonMinus.setGeometry(180, 60, 60, 50)
+buttonMinus.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: yellow;
+    }
+""")
+
+
+buttonPlus = QPushButton("+", oyna)
+buttonPlus.setGeometry(180, 110, 60, 100)
+buttonPlus.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: yellow;
+    }
+""")
+
+buttonSolve = QPushButton("=", oyna)
+buttonSolve.setGeometry(180, 210, 60, 100)
+buttonSolve.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: yellow;
+    }
+""")
+
+buttonClear = QPushButton("C", oyna)
+buttonClear.setGeometry(0, 60, 60, 50)
+buttonClear.setStyleSheet("""
+    QPushButton {
+        border-radius: 5px;
+        border: 1px solid black;
+        background-color: yellow;
+    }
+""")
+
+button1.clicked.connect(birBosildi)
+button2.clicked.connect(ikkiBosildi)
+button3.clicked.connect(uchBosildi)
+button4.clicked.connect(tortBosildi)
+button5.clicked.connect(beshBosildi)
+button6.clicked.connect(oltiBosildi)
+button7.clicked.connect(yettiBosildi)
+button8.clicked.connect(sakkizBosildi)
+button9.clicked.connect(toqqizBosildi)
+
+button0.clicked.connect(nolBosildi)
+buttonMinus.clicked.connect(minusBosildi)
+buttonPlus.clicked.connect(plusBosildi)
+buttonBolish.clicked.connect(bolishBosildi)
+buttonKopaytirish.clicked.connect(kopaytirishBosildi)
+buttonNuqta.clicked.connect(nuqtaBosildi)
+buttonSolve.clicked.connect(hisobla)
+buttonClear.clicked.connect(cBosildi)
+
+oyna.show()
+app.exec()
+print(app.aboutQt())
+
